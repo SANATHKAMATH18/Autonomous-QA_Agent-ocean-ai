@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
+import requests
 import os
 
 # Initialize the WebDriver
@@ -11,37 +12,33 @@ try:
     # Open the E-Shop Checkout page
     file_path = os.path.abspath("checkout.html")
     driver.get(f"file:///{file_path}")
+    # Update with the correct path
 
-    # Add products to the cart
+    # Add items to the cart
     driver.find_element(By.XPATH, "//button[contains(text(), 'Add to Cart') and preceding-sibling::span[contains(text(), 'Product A')]]").click()
     driver.find_element(By.XPATH, "//button[contains(text(), 'Add to Cart') and preceding-sibling::span[contains(text(), 'Product B')]]").click()
 
-    # Wait for the cart to update
-    time.sleep(1)
-
-    # Enter the discount code
+    # Apply discount code
     discount_input = driver.find_element(By.ID, "discountCode")
     discount_input.send_keys("SAVE15")
-
-    # Apply the discount
-    driver.find_element(By.XPATH, "//button[contains(text(), 'Apply')]").click()
+    discount_input.send_keys(Keys.RETURN)
 
     # Wait for the discount to be applied
-    time.sleep(1)
+    time.sleep(2)
 
-    # Verify the discount application
-    total_element = driver.find_element(By.ID, "total")
-    discount_message = driver.find_element(By.ID, "discountMessage")
+    # Check if the discount was applied
+    discount_message = driver.find_element(By.ID, "discountMessage").text
+    total_value = float(driver.find_element(By.ID, "total").text)
 
-    # Calculate expected total after 15% discount
-    original_total = 50 + 30  # Product A + Product B
-    expected_total = original_total - (original_total * 0.15)
+    assert "Discount applied!" in discount_message, "Discount message not as expected"
+    assert total_value == (50 + 30) * 0.85, "Total value after discount is incorrect"
 
-    # Check if the total is updated correctly
-    assert float(total_element.text) == round(expected_total, 2), "Total after discount is incorrect."
+    # Simulate API call to verify discount application
+    response = requests.post("http://your_api_endpoint/apply_coupon", json={"code": "SAVE15"})
+    response_data = response.json()
 
-    # Check if the success message is displayed
-    assert discount_message.text == "Discount applied!", "Discount success message is not displayed."
+    assert response_data.get("discount_applied") is True, "API did not confirm discount application"
+    assert response_data.get("discount_percentage") == 15, "API did not confirm correct discount percentage"
 
 finally:
     # Close the WebDriver

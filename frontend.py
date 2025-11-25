@@ -5,7 +5,8 @@ import json
 
 # --- CONFIGURATION ---
 # Ensure this matches your running FastAPI port
-API_BASE_URL = "http://127.0.0.1:8000"
+API_BASE_URL = "http://35.200.159.55:8000/"
+# API_BASE_URL = "http://localhost:8000/"
 
 st.set_page_config(
     page_title="Ocean AI QA Agent",

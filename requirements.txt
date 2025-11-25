@@ -16,4 +16,4 @@ sentence-transformers
 python-multipart
 tiktoken
 python-dotenv
-python-multipart
+selenium

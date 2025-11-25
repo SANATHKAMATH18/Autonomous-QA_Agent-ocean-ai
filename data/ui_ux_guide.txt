@@ -1,0 +1,8 @@
+UI/UX Guidelines for E-Shop Checkout
+
+
+1. All form validation errors must be displayed in red text.
+2. The "Pay Now" button must be green.
+3. Success message must be clearly visible after successful payment.
+4. Input fields should be simple and user-friendly.
+5. Cart summary must update instantly when items are added.

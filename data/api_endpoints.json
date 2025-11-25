@@ -1,0 +1,23 @@
+{
+  "POST /apply_coupon": {
+    "request": {
+      "code": "string"
+    },
+    "response": {
+      "discount_applied": "boolean",
+      "discount_percentage": "number"
+    }
+  },
+  "POST /submit_order": {
+    "request": {
+      "name": "string",
+      "email": "string",
+      "address": "string",
+      "payment_method": "string"
+    },
+    "response": {
+      "status": "success | failed",
+      "order_id": "string"
+    }
+  }
+}
